@@ -28,7 +28,9 @@
 (defn convert
   [{:keys [args image-url font-url] :as build-map} file]
   (let [from-file  (abs file)
-        source     (abs (source-dir build-map))
+        source     (-> build-map
+                       #(abs (source-dir %))
+                       (string/replace "\\" "\\\\"))
         dest       (abs (dest-dir build-map))
         css-file   (-> from-file
                        (string/replace (re-pattern (str "^" source)) "")
